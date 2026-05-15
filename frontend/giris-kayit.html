@@ -1,0 +1,677 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Atölye Paylaş — Giriş</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --bg: #F5F2EC;
+    --surface: #FFFEFB;
+    --ink: #1A1916;
+    --ink-2: #6B6860;
+    --ink-3: #A8A59F;
+    --accent: #2D5A3D;
+    --accent-light: #EAF3DE;
+    --accent-hover: #224830;
+    --danger: #C04828;
+    --danger-light: #FAECE7;
+    --border: rgba(26,25,22,0.12);
+    --border-focus: #2D5A3D;
+    --radius: 10px;
+    --shadow: 0 1px 3px rgba(0,0,0,0.08), 0 4px 16px rgba(0,0,0,0.06);
+    --font-display: 'DM Serif Display', Georgia, serif;
+    --font-body: 'DM Sans', system-ui, sans-serif;
+  }
+
+  body {
+    font-family: var(--font-body);
+    background-color: var(--bg);
+    color: var(--ink);
+    min-height: 100vh;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+  }
+
+  /* Sol panel */
+  .panel-left {
+    background: var(--accent);
+    padding: 48px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    position: sticky;
+    top: 0;
+    height: 100vh;
+    overflow: hidden;
+  }
+
+  .brand {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    color: #fff;
+  }
+
+  .brand-icon {
+    width: 36px;
+    height: 36px;
+    background: rgba(255,255,255,0.15);
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .brand-icon svg { width: 20px; height: 20px; fill: none; stroke: #fff; stroke-width: 1.5; stroke-linecap: round; }
+
+  .brand-name {
+    font-family: var(--font-display);
+    font-size: 18px;
+    color: #fff;
+    letter-spacing: 0.01em;
+  }
+
+  .panel-copy {
+    color: rgba(255,255,255,0.92);
+  }
+
+  .panel-copy h1 {
+    font-family: var(--font-display);
+    font-size: clamp(32px, 4vw, 46px);
+    font-weight: 400;
+    line-height: 1.2;
+    margin-bottom: 20px;
+    color: #fff;
+  }
+
+  .panel-copy p {
+    font-size: 15px;
+    font-weight: 300;
+    line-height: 1.7;
+    color: rgba(255,255,255,0.75);
+    max-width: 340px;
+  }
+
+  .features {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+    margin-top: 32px;
+  }
+
+  .features li {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 14px;
+    color: rgba(255,255,255,0.8);
+    font-weight: 300;
+  }
+
+  .features li::before {
+    content: '';
+    display: block;
+    width: 6px;
+    height: 6px;
+    background: rgba(255,255,255,0.5);
+    border-radius: 50%;
+    flex-shrink: 0;
+  }
+
+  .panel-footer {
+    font-size: 12px;
+    color: rgba(255,255,255,0.4);
+  }
+
+  /* Dekoratif daireler */
+  .deco {
+    position: absolute;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.04);
+    pointer-events: none;
+  }
+  .deco-1 { width: 300px; height: 300px; top: -80px; right: -80px; }
+  .deco-2 { width: 180px; height: 180px; bottom: 120px; right: -40px; }
+
+  /* Sağ panel */
+  .panel-right {
+    padding: 48px 56px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+  }
+
+  .form-container {
+    width: 100%;
+    max-width: 400px;
+  }
+
+  /* Tab geçişleri */
+  .tabs {
+    display: flex;
+    gap: 0;
+    background: var(--bg);
+    border-radius: 10px;
+    padding: 4px;
+    margin-bottom: 36px;
+  }
+
+  .tab-btn {
+    flex: 1;
+    padding: 9px 16px;
+    border: none;
+    background: transparent;
+    border-radius: 7px;
+    font-family: var(--font-body);
+    font-size: 14px;
+    font-weight: 400;
+    color: var(--ink-2);
+    cursor: pointer;
+    transition: all 0.18s;
+  }
+
+  .tab-btn.active {
+    background: var(--surface);
+    color: var(--ink);
+    font-weight: 500;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+  }
+
+  /* Form yapısı */
+  .form-title {
+    font-family: var(--font-display);
+    font-size: 26px;
+    font-weight: 400;
+    color: var(--ink);
+    margin-bottom: 6px;
+  }
+
+  .form-subtitle {
+    font-size: 14px;
+    color: var(--ink-2);
+    margin-bottom: 28px;
+    font-weight: 300;
+  }
+
+  .field {
+    margin-bottom: 16px;
+  }
+
+  label {
+    display: block;
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--ink);
+    margin-bottom: 6px;
+    letter-spacing: 0.01em;
+  }
+
+  input, select {
+    width: 100%;
+    padding: 10px 14px;
+    border: 1.5px solid var(--border);
+    border-radius: var(--radius);
+    background: var(--surface);
+    font-family: var(--font-body);
+    font-size: 14px;
+    color: var(--ink);
+    transition: border-color 0.15s, box-shadow 0.15s;
+    outline: none;
+    -webkit-appearance: none;
+  }
+
+  input::placeholder { color: var(--ink-3); }
+
+  input:focus, select:focus {
+    border-color: var(--border-focus);
+    box-shadow: 0 0 0 3px rgba(45,90,61,0.1);
+  }
+
+  input.error-field {
+    border-color: var(--danger);
+    box-shadow: 0 0 0 3px rgba(192,72,40,0.1);
+  }
+
+  /* Rol seçici */
+  .rol-group {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+  }
+
+  .rol-option {
+    position: relative;
+  }
+
+  .rol-option input[type="radio"] {
+    position: absolute;
+    opacity: 0;
+    width: 0;
+  }
+
+  .rol-label {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 6px;
+    padding: 14px 12px;
+    border: 1.5px solid var(--border);
+    border-radius: var(--radius);
+    background: var(--surface);
+    cursor: pointer;
+    transition: all 0.15s;
+    text-align: center;
+  }
+
+  .rol-label:hover { border-color: var(--accent); }
+
+  .rol-option input:checked + .rol-label {
+    border-color: var(--accent);
+    background: var(--accent-light);
+    color: var(--accent);
+  }
+
+  .rol-label svg { width: 22px; height: 22px; stroke: currentColor; fill: none; stroke-width: 1.5; stroke-linecap: round; }
+  .rol-label span { font-size: 13px; font-weight: 500; }
+  .rol-label small { font-size: 11px; color: var(--ink-3); font-weight: 300; }
+
+  .rol-option input:checked + .rol-label small { color: var(--accent); opacity: 0.7; }
+
+  /* Buton */
+  .btn-primary {
+    width: 100%;
+    padding: 12px 20px;
+    background: var(--accent);
+    color: #fff;
+    border: none;
+    border-radius: var(--radius);
+    font-family: var(--font-body);
+    font-size: 15px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: background 0.15s, transform 0.1s;
+    margin-top: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    letter-spacing: 0.01em;
+  }
+
+  .btn-primary:hover { background: var(--accent-hover); }
+  .btn-primary:active { transform: scale(0.99); }
+  .btn-primary:disabled { opacity: 0.6; cursor: not-allowed; }
+
+  /* Spinner */
+  .spinner {
+    width: 16px;
+    height: 16px;
+    border: 2px solid rgba(255,255,255,0.35);
+    border-top-color: #fff;
+    border-radius: 50%;
+    animation: spin 0.7s linear infinite;
+    display: none;
+  }
+
+  @keyframes spin { to { transform: rotate(360deg); } }
+
+  .btn-primary.loading .spinner { display: block; }
+  .btn-primary.loading .btn-text { display: none; }
+
+  /* Uyarı mesajları */
+  .alert {
+    padding: 12px 14px;
+    border-radius: 8px;
+    font-size: 13px;
+    margin-bottom: 16px;
+    display: none;
+    align-items: flex-start;
+    gap: 8px;
+    animation: fadeIn 0.2s ease;
+  }
+
+  @keyframes fadeIn { from { opacity: 0; transform: translateY(-4px); } to { opacity: 1; } }
+
+  .alert.show { display: flex; }
+  .alert-error { background: var(--danger-light); color: var(--danger); }
+  .alert-success { background: var(--accent-light); color: var(--accent); }
+
+  .alert svg { width: 16px; height: 16px; flex-shrink: 0; margin-top: 1px; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; }
+
+  /* Divider */
+  .divider {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin: 20px 0;
+    font-size: 12px;
+    color: var(--ink-3);
+  }
+
+  .divider::before, .divider::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: var(--border);
+  }
+
+  /* Geçiş animasyonu */
+  .form-panel {
+    transition: opacity 0.2s, transform 0.2s;
+  }
+
+  .form-panel.hidden {
+    opacity: 0;
+    transform: translateY(8px);
+    pointer-events: none;
+    position: absolute;
+  }
+
+  /* Responsive */
+  @media (max-width: 768px) {
+    body { grid-template-columns: 1fr; }
+    .panel-left { display: none; }
+    .panel-right { padding: 32px 24px; }
+  }
+</style>
+</head>
+<body>
+
+<!-- Sol panel -->
+<aside class="panel-left">
+  <div class="deco deco-1"></div>
+  <div class="deco deco-2"></div>
+
+  <div class="brand">
+    <div class="brand-icon">
+      <svg viewBox="0 0 24 24"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/></svg>
+    </div>
+    <span class="brand-name">Atölye Paylaş</span>
+  </div>
+
+  <div class="panel-copy">
+    <h1>Ekipmanını kirala,<br>ya da kiraya ver.</h1>
+    <p>Atölyendeki ekipmanlar boşta beklemek zorunda değil. Toplulukla paylaş, gelir kazan.</p>
+    <ul class="features">
+      <li>Saatlik ücret belirle, dilediğin zaman müsait et</li>
+      <li>Sağlık karnesiyle ekipman kondisyonunu takip et</li>
+      <li>Güvenli ödeme ve onay sistemi</li>
+      <li>Topluluk değerlendirmeleri</li>
+    </ul>
+  </div>
+
+  <div class="panel-footer">© 2025 Atölye Paylaş</div>
+</aside>
+
+<!-- Sağ panel -->
+<main class="panel-right">
+  <div class="form-container">
+
+    <div class="tabs">
+      <button class="tab-btn active" onclick="switchTab('giris')">Giriş Yap</button>
+      <button class="tab-btn" onclick="switchTab('kayit')">Kayıt Ol</button>
+    </div>
+
+    <!-- GİRİŞ FORMU -->
+    <div id="panel-giris" class="form-panel">
+      <h2 class="form-title">Hoş geldin</h2>
+      <p class="form-subtitle">Hesabınla giriş yap ve devam et.</p>
+
+      <div id="giris-alert" class="alert alert-error">
+        <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+        <span id="giris-alert-msg"></span>
+      </div>
+
+      <div class="field">
+        <label for="giris-email">E-posta</label>
+        <input type="email" id="giris-email" placeholder="ornek@email.com" autocomplete="email">
+      </div>
+
+      <div class="field">
+        <label for="giris-sifre">Şifre</label>
+        <input type="password" id="giris-sifre" placeholder="••••••••" autocomplete="current-password">
+      </div>
+
+      <button class="btn-primary" id="giris-btn" onclick="girisYap()">
+        <span class="spinner"></span>
+        <span class="btn-text">Giriş Yap</span>
+      </button>
+
+      <div class="divider">veya</div>
+
+      <p style="text-align:center;font-size:13px;color:var(--ink-2)">
+        Hesabın yok mu?
+        <a href="#" onclick="switchTab('kayit');return false;" style="color:var(--accent);font-weight:500;text-decoration:none">Kayıt ol</a>
+      </p>
+    </div>
+
+    <!-- KAYIT FORMU -->
+    <div id="panel-kayit" class="form-panel hidden" style="position:relative">
+      <h2 class="form-title">Hesap oluştur</h2>
+      <p class="form-subtitle">Birkaç adımda başla, ücretsiz.</p>
+
+      <div id="kayit-alert" class="alert alert-error">
+        <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+        <span id="kayit-alert-msg"></span>
+      </div>
+
+      <div id="kayit-success" class="alert alert-success">
+        <svg viewBox="0 0 24 24"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+        <span>Hesabın oluşturuldu! Giriş yapabilirsin.</span>
+      </div>
+
+      <div class="field">
+        <label for="kayit-ad">Ad Soyad</label>
+        <input type="text" id="kayit-ad" placeholder="Ahmet Yılmaz" autocomplete="name">
+      </div>
+
+      <div class="field">
+        <label for="kayit-email">E-posta</label>
+        <input type="email" id="kayit-email" placeholder="ornek@email.com" autocomplete="email">
+      </div>
+
+      <div class="field">
+        <label for="kayit-sifre">Şifre</label>
+        <input type="password" id="kayit-sifre" placeholder="En az 6 karakter" autocomplete="new-password">
+      </div>
+
+      <div class="field">
+        <label>Hesap Türü</label>
+        <div class="rol-group">
+          <div class="rol-option">
+            <input type="radio" name="rol" id="rol-kiralayan" value="kiralayan" checked>
+            <label class="rol-label" for="rol-kiralayan">
+              <svg viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+              <span>Kiralayan</span>
+              <small>Ekipman kiralamak istiyorum</small>
+            </label>
+          </div>
+          <div class="rol-option">
+            <input type="radio" name="rol" id="rol-sahip" value="sahip">
+            <label class="rol-label" for="rol-sahip">
+              <svg viewBox="0 0 24 24"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/></svg>
+              <span>Ekipman Sahibi</span>
+              <small>Ekipmanımı kiraya vermek istiyorum</small>
+            </label>
+          </div>
+        </div>
+      </div>
+
+      <button class="btn-primary" id="kayit-btn" onclick="kayitOl()">
+        <span class="spinner"></span>
+        <span class="btn-text">Hesap Oluştur</span>
+      </button>
+
+      <div class="divider">veya</div>
+
+      <p style="text-align:center;font-size:13px;color:var(--ink-2)">
+        Zaten hesabın var mı?
+        <a href="#" onclick="switchTab('giris');return false;" style="color:var(--accent);font-weight:500;text-decoration:none">Giriş yap</a>
+      </p>
+    </div>
+
+  </div>
+</main>
+
+<script>
+  // ─── AYARLAR ───────────────────────────────────────────────────
+  // API klasörünün yolunu buradan düzenle
+  const API_BASE = 'http://localhost/atolyepaylas/api';
+
+  // ─── TAB GEÇİŞİ ────────────────────────────────────────────────
+  function switchTab(tab) {
+    const panelGiris = document.getElementById('panel-giris');
+    const panelKayit = document.getElementById('panel-kayit');
+    const tabBtns = document.querySelectorAll('.tab-btn');
+
+    if (tab === 'giris') {
+      panelGiris.classList.remove('hidden');
+      panelKayit.classList.add('hidden');
+      tabBtns[0].classList.add('active');
+      tabBtns[1].classList.remove('active');
+    } else {
+      panelGiris.classList.add('hidden');
+      panelKayit.classList.remove('hidden');
+      tabBtns[0].classList.remove('active');
+      tabBtns[1].classList.add('active');
+    }
+    hideAlerts();
+  }
+
+  // ─── YARDIMCI FONKSİYONLAR ─────────────────────────────────────
+  function showAlert(id, msg, type = 'error') {
+    const el = document.getElementById(id);
+    const msgEl = document.getElementById(id + '-msg');
+    el.className = `alert alert-${type} show`;
+    if (msgEl) msgEl.textContent = msg;
+  }
+
+  function hideAlerts() {
+    document.querySelectorAll('.alert').forEach(a => a.classList.remove('show'));
+  }
+
+  function setLoading(btnId, loading) {
+    const btn = document.getElementById(btnId);
+    btn.classList.toggle('loading', loading);
+    btn.disabled = loading;
+  }
+
+  function setError(inputId) {
+    document.getElementById(inputId)?.classList.add('error-field');
+  }
+
+  function clearErrors() {
+    document.querySelectorAll('.error-field').forEach(el => el.classList.remove('error-field'));
+  }
+
+  // ─── GİRİŞ ─────────────────────────────────────────────────────
+  async function girisYap() {
+    clearErrors();
+    hideAlerts();
+
+    const email = document.getElementById('giris-email').value.trim();
+    const sifre = document.getElementById('giris-sifre').value;
+
+    if (!email) { setError('giris-email'); showAlert('giris-alert', 'E-posta adresinizi girin.'); return; }
+    if (!sifre) { setError('giris-sifre'); showAlert('giris-alert', 'Şifrenizi girin.'); return; }
+
+    setLoading('giris-btn', true);
+
+    try {
+      const res = await fetch(`${API_BASE}/giris.php`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        credentials: 'include', // session cookie için şart!
+        body: JSON.stringify({ email, sifre })
+      });
+
+      const data = await res.json();
+
+      if (res.ok && data.status === 'success') {
+        // Kullanıcı bilgisini localStorage'a al (session ana auth, bu sadece UI için)
+        localStorage.setItem('kullanici', JSON.stringify(data.kullanici));
+
+        // Role göre yönlendir
+        if (data.kullanici.rol === 'sahip') {
+          window.location.href = 'sahip-panel.html';
+        } else {
+          window.location.href = 'ekipmanlar.html';
+        }
+      } else {
+        showAlert('giris-alert', data.message || 'Giriş başarısız.');
+        if (res.status === 404) setError('giris-email');
+        if (res.status === 401) setError('giris-sifre');
+      }
+
+    } catch (err) {
+      showAlert('giris-alert', 'Sunucuya bağlanılamadı. Lütfen tekrar deneyin.');
+      console.error(err);
+    } finally {
+      setLoading('giris-btn', false);
+    }
+  }
+
+  // ─── KAYIT ─────────────────────────────────────────────────────
+  async function kayitOl() {
+    clearErrors();
+    hideAlerts();
+
+    const ad_soyad = document.getElementById('kayit-ad').value.trim();
+    const email    = document.getElementById('kayit-email').value.trim();
+    const sifre    = document.getElementById('kayit-sifre').value;
+    const rol      = document.querySelector('input[name="rol"]:checked').value;
+
+    if (!ad_soyad) { setError('kayit-ad');    showAlert('kayit-alert', 'Adınızı ve soyadınızı girin.'); return; }
+    if (!email)    { setError('kayit-email'); showAlert('kayit-alert', 'E-posta adresinizi girin.'); return; }
+    if (sifre.length < 6) { setError('kayit-sifre'); showAlert('kayit-alert', 'Şifre en az 6 karakter olmalıdır.'); return; }
+
+    setLoading('kayit-btn', true);
+
+    try {
+      const res = await fetch(`${API_BASE}/kayit.php`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ ad_soyad, email, sifre, rol })
+      });
+
+      const data = await res.json();
+
+      if (res.ok && data.status === 'success') {
+        document.getElementById('kayit-success').classList.add('show');
+        // Formu temizle
+        ['kayit-ad', 'kayit-email', 'kayit-sifre'].forEach(id => {
+          document.getElementById(id).value = '';
+        });
+        // 2 saniye sonra giriş sekmesine geç
+        setTimeout(() => switchTab('giris'), 2000);
+      } else {
+        showAlert('kayit-alert', data.message || 'Kayıt işlemi başarısız.');
+        if (res.status === 400 && data.message?.includes('e-posta')) setError('kayit-email');
+      }
+
+    } catch (err) {
+      showAlert('kayit-alert', 'Sunucuya bağlanılamadı. Lütfen tekrar deneyin.');
+      console.error(err);
+    } finally {
+      setLoading('kayit-btn', false);
+    }
+  }
+
+  // ─── ENTER tuşu desteği ────────────────────────────────────────
+  document.addEventListener('keydown', (e) => {
+    if (e.key !== 'Enter') return;
+    const girisAktif = !document.getElementById('panel-giris').classList.contains('hidden');
+    if (girisAktif) girisYap();
+    else kayitOl();
+  });
+</script>
+</body>
+</html>

@@ -1,0 +1,429 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Atölye Paylaş — Kiralamalar</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --bg: #F5F2EC;
+    --surface: #FFFEFB;
+    --ink: #1A1916;
+    --ink-2: #6B6860;
+    --ink-3: #A8A59F;
+    --accent: #2D5A3D;
+    --accent-light: #EAF3DE;
+    --accent-hover: #224830;
+    --danger: #C04828;
+    --danger-light: #FAECE7;
+    --warning-light: #FEF3C7;
+    --warning: #92400E;
+    --border: rgba(26,25,22,0.12);
+    --sidebar-w: 240px;
+    --font-display: 'DM Serif Display', Georgia, serif;
+    --font-body: 'DM Sans', system-ui, sans-serif;
+  }
+
+  body { font-family: var(--font-body); background: var(--bg); color: var(--ink); min-height: 100vh; display: flex; }
+
+  /* SIDEBAR */
+  .sidebar {
+    width: var(--sidebar-w);
+    min-height: 100vh;
+    background: var(--surface);
+    border-right: 1px solid var(--border);
+    display: flex;
+    flex-direction: column;
+    position: fixed;
+    top: 0; left: 0;
+    z-index: 100;
+  }
+
+  .sidebar-brand {
+    padding: 20px 16px 16px;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .brand-logo {
+    font-family: var(--font-display);
+    font-size: 16px;
+    color: var(--accent);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    text-decoration: none;
+    margin-bottom: 14px;
+  }
+
+  .sidebar-profil {
+    background: var(--accent-light);
+    border-radius: 10px;
+    padding: 10px 12px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .profil-avatar {
+    width: 36px; height: 36px;
+    border-radius: 50%;
+    background: var(--accent);
+    color: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 13px;
+    font-weight: 500;
+    flex-shrink: 0;
+  }
+
+  .profil-isim { font-size: 13px; font-weight: 500; color: var(--ink); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .profil-rol { font-size: 11px; color: var(--accent); margin-top: 1px; }
+
+  .sidebar-menu { flex: 1; padding: 10px 8px; display: flex; flex-direction: column; gap: 2px; }
+
+  .menu-label { font-size: 10px; font-weight: 500; color: var(--ink-3); text-transform: uppercase; letter-spacing: 0.08em; padding: 10px 10px 4px; }
+
+  .menu-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 9px 10px;
+    border-radius: 8px;
+    font-size: 13px;
+    color: var(--ink-2);
+    text-decoration: none;
+    cursor: pointer;
+    transition: all 0.12s;
+    border: none;
+    background: none;
+    width: 100%;
+    font-family: var(--font-body);
+    text-align: left;
+  }
+
+  .menu-item:hover { background: var(--bg); color: var(--ink); }
+  .menu-item.active { background: var(--accent-light); color: var(--accent); font-weight: 500; }
+  .menu-item svg { width: 16px; height: 16px; flex-shrink: 0; opacity: 0.6; }
+  .menu-item.active svg { opacity: 1; }
+  .menu-item.danger { color: var(--danger); }
+  .menu-item.danger:hover { background: var(--danger-light); }
+
+  .menu-badge {
+    margin-left: auto;
+    background: var(--accent);
+    color: #fff;
+    border-radius: 10px;
+    padding: 1px 7px;
+    font-size: 11px;
+    font-weight: 500;
+  }
+
+  .sidebar-footer { padding: 10px 8px; border-top: 1px solid var(--border); }
+
+  /* MAIN */
+  .main { margin-left: var(--sidebar-w); flex: 1; padding: 36px 40px; }
+
+  .page-header { margin-bottom: 28px; }
+  .page-header h1 { font-family: var(--font-display); font-size: 28px; font-weight: 400; margin-bottom: 4px; }
+  .page-header p { font-size: 13px; color: var(--ink-2); font-weight: 300; }
+
+  .tabs {
+    display: flex;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 4px;
+    margin-bottom: 24px;
+    width: fit-content;
+  }
+
+  .tab-btn {
+    padding: 7px 18px;
+    border: none;
+    background: transparent;
+    border-radius: 7px;
+    font-family: var(--font-body);
+    font-size: 13px;
+    color: var(--ink-2);
+    cursor: pointer;
+    transition: all 0.15s;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+
+  .tab-btn.active { background: var(--accent); color: #fff; font-weight: 500; }
+  .tab-badge { background: rgba(255,255,255,0.25); border-radius: 10px; padding: 1px 7px; font-size: 11px; }
+  .tab-btn:not(.active) .tab-badge { background: var(--bg); color: var(--ink-3); }
+
+  .liste { display: flex; flex-direction: column; gap: 14px; }
+
+  .kart {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 20px 22px;
+    display: grid;
+    grid-template-columns: 1fr auto;
+    gap: 16px;
+    align-items: start;
+    transition: box-shadow 0.2s;
+  }
+
+  .kart:hover { box-shadow: 0 4px 20px rgba(0,0,0,0.07); }
+  .kart.beklemede { border-left: 3px solid #F59E0B; }
+  .kart.onaylandi { border-left: 3px solid var(--accent); }
+  .kart.tamamlandi { border-left: 3px solid var(--ink-3); }
+  .kart.iptal { border-left: 3px solid var(--danger); }
+
+  .kart-ust { display: flex; align-items: flex-start; gap: 12px; margin-bottom: 14px; }
+
+  .kart-ikon {
+    width: 42px; height: 42px;
+    background: var(--accent-light);
+    border-radius: 10px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 20px; flex-shrink: 0;
+  }
+
+  .kart-baslik { font-family: var(--font-display); font-size: 17px; font-weight: 400; margin-bottom: 2px; }
+  .kart-taraf { font-size: 12px; color: var(--ink-3); }
+  .kart-taraf span { color: var(--ink-2); font-weight: 500; }
+
+  .kart-detaylar {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 10px;
+    padding: 12px;
+    background: var(--bg);
+    border-radius: 8px;
+  }
+
+  .detay-label { font-size: 10px; color: var(--ink-3); text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 3px; }
+  .detay-deger { font-size: 12px; color: var(--ink); font-weight: 500; }
+  .detay-deger.tutar { color: var(--accent); font-size: 14px; }
+
+  .durum-badge { padding: 5px 12px; border-radius: 20px; font-size: 12px; font-weight: 500; white-space: nowrap; }
+  .durum-beklemede { background: var(--warning-light); color: var(--warning); }
+  .durum-onaylandi { background: var(--accent-light); color: var(--accent); }
+  .durum-tamamlandi { background: var(--bg); color: var(--ink-3); border: 1px solid var(--border); }
+  .durum-iptal { background: var(--danger-light); color: var(--danger); }
+
+  .aksiyon-grup { display: flex; gap: 8px; margin-top: 12px; }
+
+  .btn-onayla { padding: 7px 16px; background: var(--accent); color: #fff; border: none; border-radius: 7px; font-family: var(--font-body); font-size: 13px; font-weight: 500; cursor: pointer; transition: background 0.15s; }
+  .btn-onayla:hover { background: var(--accent-hover); }
+
+  .btn-reddet { padding: 7px 16px; background: transparent; color: var(--danger); border: 1.5px solid rgba(192,72,40,0.3); border-radius: 7px; font-family: var(--font-body); font-size: 13px; font-weight: 500; cursor: pointer; transition: all 0.15s; }
+  .btn-reddet:hover { background: var(--danger-light); }
+
+  .bos { text-align: center; padding: 60px 20px; background: var(--surface); border-radius: 14px; border: 1px dashed var(--border); }
+  .bos-ikon { font-size: 40px; margin-bottom: 12px; opacity: 0.35; }
+  .bos h3 { font-family: var(--font-display); font-size: 20px; font-weight: 400; margin-bottom: 6px; }
+  .bos p { font-size: 13px; color: var(--ink-2); font-weight: 300; }
+
+  .skeleton-kart { background: var(--surface); border: 1px solid var(--border); border-radius: 14px; padding: 20px 22px; animation: pulse 1.5s ease-in-out infinite; }
+  @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.5} }
+  .sk { height: 13px; background: var(--bg); border-radius: 4px; margin-bottom: 10px; }
+  .sk.w70 { width: 70%; } .sk.w40 { width: 40%; } .sk.box { height: 60px; margin-top: 12px; }
+
+  .toast { position: fixed; bottom: 24px; right: 24px; padding: 12px 20px; border-radius: 10px; font-size: 13px; color: #fff; opacity: 0; transform: translateY(8px); transition: all 0.3s; z-index: 999; pointer-events: none; }
+  .toast.show { opacity: 1; transform: translateY(0); }
+  .toast.success { background: var(--accent); }
+  .toast.error { background: var(--danger); }
+</style>
+</head>
+<body>
+
+<aside class="sidebar">
+  <div class="sidebar-brand">
+    <a href="ekipmanlar.html" class="brand-logo">⚙ Atölye Paylaş</a>
+    <div class="sidebar-profil">
+      <div class="profil-avatar" id="profil-avatar">?</div>
+      <div style="min-width:0">
+        <div class="profil-isim" id="profil-isim">—</div>
+        <div class="profil-rol" id="profil-rol">—</div>
+      </div>
+    </div>
+  </div>
+
+  <nav class="sidebar-menu">
+    <div class="menu-label">Genel</div>
+    <a href="ekipmanlar.html" class="menu-item">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
+      Ekipmanlar
+    </a>
+    <a href="kiralamalar.html" class="menu-item active">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/></svg>
+      Kiralamalarım
+      <span class="menu-badge" id="menu-badge" style="display:none">0</span>
+    </a>
+
+    <div class="menu-label" id="sahip-label" style="display:none">Sahip</div>
+    <a href="sahip-panel.html" class="menu-item" id="sahip-menu" style="display:none">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/></svg>
+      Ekipman Panelim
+    </a>
+  </nav>
+
+  <div class="sidebar-footer">
+    <button class="menu-item danger" onclick="cikisYap()">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+      Çıkış Yap
+    </button>
+  </div>
+</aside>
+
+<div class="main">
+  <div class="page-header">
+    <h1 id="sayfa-baslik">Kiralamalarım</h1>
+    <p id="sayfa-aciklama">Kiralama geçmişin ve aktif işlemler.</p>
+  </div>
+
+  <div id="sahip-tabs" style="display:none">
+    <div class="tabs">
+      <button class="tab-btn active" id="tab-gelen" onclick="sekmeGec('gelen')">
+        Gelen İstekler <span class="tab-badge" id="badge-gelen">0</span>
+      </button>
+      <button class="tab-btn" id="tab-gecmis" onclick="sekmeGec('gecmis')">
+        Geçmiş <span class="tab-badge" id="badge-gecmis">0</span>
+      </button>
+    </div>
+  </div>
+
+  <div class="liste" id="liste">
+    <div class="skeleton-kart"><div class="sk w70"></div><div class="sk w40"></div><div class="sk box"></div></div>
+    <div class="skeleton-kart"><div class="sk w70"></div><div class="sk w40"></div><div class="sk box"></div></div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+  const API_BASE = 'http://localhost/atolyepaylas/api';
+  const kategorIkonlar = { 'Ahşap İşleme':'🪵','Metal İşleme':'⚙️','Elektronik':'🔌','3D Baskı':'🖨️','Tekstil':'🧵','Diğer':'📦' };
+
+  const kullanici = JSON.parse(localStorage.getItem('kullanici') || 'null');
+  if (!kullanici) { window.location.href = 'giris-kayit.html'; }
+
+  const isSahip = kullanici.rol === 'sahip';
+  let aktifSekme = 'gelen';
+  let tumKiralamalar = [];
+
+  const initials = kullanici.ad_soyad.split(' ').map(n=>n[0]).join('').toUpperCase().slice(0,2);
+  document.getElementById('profil-avatar').textContent = initials;
+  document.getElementById('profil-isim').textContent = kullanici.ad_soyad;
+  document.getElementById('profil-rol').textContent = isSahip ? 'Ekipman Sahibi' : 'Kiralayan';
+
+  if (isSahip) {
+    document.getElementById('sahip-label').style.display = 'block';
+    document.getElementById('sahip-menu').style.display = 'flex';
+    document.getElementById('sahip-tabs').style.display = 'block';
+    document.getElementById('sayfa-baslik').textContent = 'Kiralamalar';
+    document.getElementById('sayfa-aciklama').textContent = 'Ekipmanlarına gelen istekler ve geçmiş kiralamalar.';
+  }
+
+  function toast(msg, tip='success') {
+    const el = document.getElementById('toast');
+    el.textContent = msg; el.className = `toast ${tip} show`;
+    setTimeout(() => el.classList.remove('show'), 3000);
+  }
+
+  function formatTarih(t) {
+    return new Date(t).toLocaleString('tr-TR', { day:'2-digit', month:'2-digit', year:'numeric', hour:'2-digit', minute:'2-digit' });
+  }
+
+  function sekmeGec(s) {
+    aktifSekme = s;
+    document.getElementById('tab-gelen').classList.toggle('active', s==='gelen');
+    document.getElementById('tab-gecmis').classList.toggle('active', s==='gecmis');
+    renderListe(tumKiralamalar);
+  }
+
+  async function yukle() {
+    try {
+      const endpoint = isSahip ? 'sahip_kiralamalar.php' : 'kiralamalarim.php';
+      const res = await fetch(`${API_BASE}/${endpoint}`, { credentials:'include' });
+      const data = await res.json();
+      if (data.status === 'success') {
+        tumKiralamalar = data.kiralamalar;
+        renderListe(tumKiralamalar);
+        const bekleyen = tumKiralamalar.filter(k=>k.durum==='beklemede').length;
+        if (bekleyen > 0) {
+          const mb = document.getElementById('menu-badge');
+          mb.textContent = bekleyen; mb.style.display = 'inline-block';
+        }
+      }
+    } catch {
+      document.getElementById('liste').innerHTML = '<div class="bos"><div class="bos-ikon">⚠️</div><h3>Bağlantı hatası</h3></div>';
+    }
+  }
+
+  function renderListe(kiralamalar) {
+    let liste = kiralamalar;
+    if (isSahip) {
+      liste = aktifSekme==='gelen' ? kiralamalar.filter(k=>k.durum==='beklemede') : kiralamalar.filter(k=>k.durum!=='beklemede');
+      document.getElementById('badge-gelen').textContent = kiralamalar.filter(k=>k.durum==='beklemede').length;
+      document.getElementById('badge-gecmis').textContent = kiralamalar.filter(k=>k.durum!=='beklemede').length;
+    }
+
+    const container = document.getElementById('liste');
+    const durumLabel = { 'beklemede':'⏳ Onay Bekliyor','onaylandi':'✓ Onaylandı','tamamlandi':'✓ Tamamlandı','iptal':'✕ İptal' };
+
+    if (liste.length === 0) {
+      container.innerHTML = `<div class="bos"><div class="bos-ikon">📋</div><h3>${isSahip&&aktifSekme==='gelen'?'Bekleyen istek yok':'Henüz kiralama yok'}</h3><p>${isSahip?'Yeni istek geldiğinde burada görünür.':'Ekipman listesinden kiralama yapabilirsin.'}</p></div>`;
+      return;
+    }
+
+    container.innerHTML = liste.map(k => {
+      const taraf = isSahip ? `Kiralayan: <span>${k.kiralayan_adi}</span>` : `Sahip: <span>${k.sahip_adi}</span>`;
+      const aksiyonlar = (isSahip && k.durum==='beklemede') ? `<div class="aksiyon-grup"><button class="btn-onayla" onclick="guncelle(${k.id},'onaylandi')">✓ Onayla</button><button class="btn-reddet" onclick="guncelle(${k.id},'iptal')">✕ Reddet</button></div>` : '';
+      return `
+        <div class="kart ${k.durum}">
+          <div>
+            <div class="kart-ust">
+              <div class="kart-ikon">${kategorIkonlar[k.kategori]||'📦'}</div>
+              <div><div class="kart-baslik">${k.ekipman_baslik}</div><div class="kart-taraf">${taraf}</div></div>
+            </div>
+            <div class="kart-detaylar">
+              <div><div class="detay-label">Başlangıç</div><div class="detay-deger">${formatTarih(k.baslangic_tarihi)}</div></div>
+              <div><div class="detay-label">Bitiş</div><div class="detay-deger">${formatTarih(k.bitis_tarihi)}</div></div>
+              <div><div class="detay-label">Toplam</div><div class="detay-deger tutar">₺${parseFloat(k.toplam_tutar).toFixed(2)}</div></div>
+              <div><div class="detay-label">Teslimat</div><div class="detay-deger">${k.teslimat_noktasi}</div></div>
+            </div>
+            ${aksiyonlar}
+          </div>
+          <span class="durum-badge durum-${k.durum}">${durumLabel[k.durum]||k.durum}</span>
+        </div>`;
+    }).join('');
+  }
+
+  async function guncelle(id, durum) {
+    try {
+      const res = await fetch(`${API_BASE}/kiralama_guncelle.php`, {
+        method:'POST', headers:{'Content-Type':'application/json'}, credentials:'include',
+        body: JSON.stringify({ kiralama_id: id, durum })
+      });
+      const data = await res.json();
+      if (data.status==='success') {
+        toast(durum==='onaylandi'?'✓ Onaylandı!':'✕ Reddedildi.', durum==='onaylandi'?'success':'error');
+        yukle();
+      } else { toast(data.message||'Hata.','error'); }
+    } catch { toast('Bağlantı hatası.','error'); }
+  }
+
+  async function cikisYap() {
+    await fetch('http://localhost/atolyepaylas/api/cikis.php', { method:'POST', credentials:'include' });
+    localStorage.removeItem('kullanici');
+    window.location.href = 'giris-kayit.html';
+}
+
+  yukle();
+</script>
+</body>
+</html>
